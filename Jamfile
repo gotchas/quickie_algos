@@ -1,0 +1,26 @@
+project
+   : requirements <include>. <cxxflags>"-std=c++1z "
+   : usage-requirements <include>. <cxxflags>"-std=c++1z "
+;
+
+#lib algos : src/suffix_array.cpp ;
+
+rule u-t ( target : properties * )
+{
+    unit-test $(target) : test/$(target).cpp
+    ; #: <library>algos ; # <testing.launcher>valgrind $(properties)
+}
+
+test-suite sorting :
+#      [ run test/quicksort.cpp ]
+#      [ run test/selection_sort.cpp ]
+      [ run test/insertion_sort.cpp ]
+#      [ run test/merge_sort.cpp ]
+;
+
+test-suite stats :
+#      [ run test/median.cpp ]
+#      [ compile test/nth_element_impl.cpp ]
+;
+
+#[ run test/Dijkstra_s_Algorithm.cpp : <toolset>clang-4.0 ]
