@@ -9,7 +9,7 @@
 
 #include "lest.hpp"
 
-#include "rld/quickie_algos/selection_sort.h"
+#include "rld/qalgos/selection_sort.h"
 
 
 

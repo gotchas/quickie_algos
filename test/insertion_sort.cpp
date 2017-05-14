@@ -5,7 +5,7 @@
 
 #include "lest.hpp"
 
-#include "rld/quickie_algos/insertion_sort.h"
+#include "rld/qalgos/insertion_sort.h"
 
 namespace rld { namespace algos {
 
