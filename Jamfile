@@ -23,4 +23,6 @@ test-suite stats :
 #      [ compile test/nth_element_impl.cpp ]
 ;
 
+#TODO add to CI: travis
+
 #[ run test/Dijkstra_s_Algorithm.cpp : <toolset>clang-4.0 ]

@@ -1,7 +1,6 @@
 // http://en.cppreference.com/w/cpp/algorithm/rotate
 
 #include <vector>
-#include <iostream>
 #include <algorithm>
 
 #include "lest.hpp"
@@ -48,10 +47,10 @@ const lest::test specification[] = {
          insertion_sort(s.begin(), s.end());
          EXPECT(s == (S{"  aaaaalms"}));
       }
-      SECTION("proposition: Non empty range of chars with codes outside of ASCII") {
-         S s{"ala" "\x81" " ma " "\xF1" "asa"};
+      SECTION("proposition: Non empty range of chars with codes outside of ASCII range") {
+         S s{"ala""\x81"" ma ""\xF1""asa"};
          insertion_sort(s.begin(), s.end());
-         EXPECT(s == (S{"\x81" "\xF1" "  aaaaalms"})); // if c>127 conversion is: c - 128
+         EXPECT(s == (S{"\x81""\xF1""  aaaaalms"})); // if c>127 conversion is: c - 128
       }
    }
 }},
