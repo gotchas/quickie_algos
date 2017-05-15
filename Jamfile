@@ -8,21 +8,24 @@ project
 rule u-t ( target : properties * )
 {
     unit-test $(target) : test/$(target).cpp
-    ; #: <library>algos ; # <testing.launcher>valgrind $(properties)
+    : #<library>algos # <testing.launcher>valgrind 
+    $(properties)
+    ;
 }
 
-test-suite sorting :
+u-t sorting ;
+
+#test-suite suite_sorting :
+#      [ run test/sorting.cpp ]
+#      [ u-t insertion_sort ]
 #      [ run test/quicksort.cpp ]
-      [ run test/selection_sort.cpp ]
-      [ run test/insertion_sort.cpp ]
 #      [ run test/merge_sort.cpp ]
-;
+#;
 
 test-suite stats :
-#      [ run test/median.cpp ]
-#      [ compile test/nth_element_impl.cpp ]
+      [ u-t median ]
+      [ u-t nth_element ]
 ;
 
-#TODO add to CI: travis
-
 #[ run test/Dijkstra_s_Algorithm.cpp : <toolset>clang-4.0 ]
+
