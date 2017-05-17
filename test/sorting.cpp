@@ -222,13 +222,16 @@ const lest::test specification[] = {
 }
 }
 
-   auto
-   fibonaci_generator() { return [ i = 0LL, j = 1LL ]() mutable { return std::exchange(j, i + j); }; }
+auto
+fibonaci_generator() {
+   return [ i = 0LL, j = 1LL ]() mutable { return std::exchange(j, i + j); };
+}
 
-int main(int argc, char* argv[]) {
+int
+main(int argc, char* argv[]) {
    auto fgen = fibonaci_generator();
-   fgen();
-   fgen();
+   auto v    = fgen();
+   auto x    = fgen() + v;
 
    return lest::run(rld::algos::specification, argc, argv);
-   }
+}
