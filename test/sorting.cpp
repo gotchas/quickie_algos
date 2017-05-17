@@ -1,13 +1,15 @@
 // http://en.cppreference.com/w/cpp/algorithm/iter_swap
 
+#include "rld/qalgos/insertion_sort.h"
+#include "rld/qalgos/merge_sort.h"
 #include "rld/qalgos/quicksort.h"
 #include "rld/qalgos/selection_sort.h"
-#include "rld/qalgos/insertion_sort.h"
 
 #include "lest.hpp"
 
-#include <vector>
 #include <forward_list>
+#include <list>
+#include <vector>
 
 #include <algorithm>
 
@@ -16,25 +18,25 @@
 
 #include <random>
 
-//TODO
-#define XALGOS_SECTIONS() \
-      SECTION("selection sort") { \
-         selection_sort(fl.begin(), fl.end()); \
-         EXPECT(fl == expected); \
-      } \
-      SECTION("insertion sort") { \
-         insertion_sort(fl.begin(), fl.end()); \
-         EXPECT(fl == expected); \
-      }
+// TODO
+#define XALGOS_SECTIONS()                   \
+   SECTION("selection sort") {              \
+      selection_sort(fl.begin(), fl.end()); \
+      EXPECT(fl == expected);               \
+   }                                        \
+   SECTION("insertion sort") {              \
+      insertion_sort(fl.begin(), fl.end()); \
+      EXPECT(fl == expected);               \
+   }
 
 #define ALGOS_SECTIONS() XALGOS_SECTIONS()
 
-
-namespace rld { namespace algos {
-
+namespace rld {
+namespace algos {
+   // clang-format off
 const lest::test specification[] = {
-
-{CASE("proposition: proper sorting of range of integers") {
+///////////////FORWARD IT ENABLED ALGOS ////////////////////////////////
+{CASE("proposition: proper sorting of ForwardIter range of integers") {
    using FL = std::forward_list<int>;//TODO rename - use eclipse
    SETUP("context: empty range") {
       FL fl{};
@@ -106,7 +108,49 @@ const lest::test specification[] = {
       }
    }
 }},
-{CASE("proposition: proper sorting of range of chars/strings") {
+///////////////BIDIR IT ENABLED ALGOS //////////////////////////////////
+{CASE("proposition: proper sorting of ForwardIter range of integers") {
+   using FL = std::list<int>;//TODO rename - use eclipse
+   SETUP("context: empty range") {
+      FL fl{};
+      FL expected{};
+      SECTION("merge sort") {
+         merge_sort(fl.begin(), fl.end());
+         EXPECT(fl == expected);
+      }
+   }
+   SETUP("context: singleton range") {
+      FL fl{7};
+      selection_sort(fl.begin(), fl.end());
+      FL expected{ 7, };
+      SECTION("merge sort") {
+         merge_sort(fl.begin(), fl.end());
+         EXPECT(fl == expected);
+      }
+   }
+   SETUP("context: Non empty range positive of integers") {
+      FL fl{2, 4, 2, 0, 5, 10, 7, 3, 7, 1};
+      FL expected{ 0, 1, 2, 2, 3, 4, 5, 7, 7, 10, };
+      SECTION("merge sort") {
+         merge_sort(fl.begin(), fl.end());
+         EXPECT(fl == expected);
+      }
+   }
+   SETUP("context: generate in range with mt19937") {
+      //std::random_device rd;
+      std::mt19937 gen(785);//std::mt19937 gen(rd());
+      std::uniform_int_distribution<> dist(-10, 10);
+      FL fl;
+      generate_n(front_inserter(fl), 20, bind(dist, gen));
+      FL expected{-10, -9, -9, -7, -7, -6, -6, -4, -4, -4, -3, -2, -1, 0, 0, 2, 2, 4, 4, 7,};
+      SECTION("merge sort") {
+         merge_sort(fl.begin(), fl.end());
+         EXPECT(fl == expected);
+      }
+   }
+}},
+////////////////TESTS WITH RANDOM IN: not necessarily require RandIT ///
+{CASE("proposition: proper sorting of RandomIt range of chars/strings") {
    using S = std::string;
    SETUP("context: empty string") {
       S s{};
@@ -174,12 +218,17 @@ const lest::test specification[] = {
    }
 }},
 };
-
-}}
-
-int main( int argc, char * argv[] )
-{
-    return lest::run( rld::algos::specification, argc, argv );
+// clang-format on
+}
 }
 
+   auto
+   fibonaci_generator() { return [ i = 0LL, j = 1LL ]() mutable { return std::exchange(j, i + j); }; }
 
+int main(int argc, char* argv[]) {
+   auto fgen = fibonaci_generator();
+   fgen();
+   fgen();
+
+   return lest::run(rld::algos::specification, argc, argv);
+   }

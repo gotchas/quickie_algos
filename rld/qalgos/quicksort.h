@@ -11,11 +11,13 @@ namespace algos {
 template <class ForwardIt> void quicksort(ForwardIt first, ForwardIt last) {
   if (first == last) return;
   auto const pivot = *std::next(first, std::distance(first, last) / 2);
-  ForwardIt middle1 = std::partition(
+  ForwardIt middle1 = std::partition( // >pivot
       first, last, [pivot](const auto &em) { return em < pivot; });
-  ForwardIt middle2 = std::partition(
-      middle1, last, [pivot](const auto &em) { return !(pivot < em); });//? using basic operations < and ! (not derived <=)
+  ForwardIt middle2 = std::partition( // <= pivot
+      middle1, last, [pivot](const auto &em) { return !(pivot < em); });
+      //using basic operations !,< (<= may be not supported)
   quicksort(first, middle1);// el < pivot
+  // pivot is already in final position
   quicksort(middle2, last);// el > pivot
 }
 

@@ -1,0 +1,31 @@
+
+# http://clang.llvm.org/docs/ClangFormatStyleOptions.html
+---
+Language:               Cpp
+Standard:               Cpp11
+BasedOnStyle:           Google  # LLVM, Google, Chromium, Mozilla, WebKit
+ColumnLimit:            128
+
+UseTab: Never
+IndentWidth: 3
+NamespaceIndentation: Inner
+BreakBeforeInheritanceComma: true
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignEscapedNewlinesLeft: true
+AlignOperands: true
+AlignTrailingComments: true #?
+AllowAllParametersOfDeclarationOnNextLine: true #?
+AllowShortBlocksOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+AlwaysBreakAfterReturnType: All #?
+AlwaysBreakBeforeMultilineStrings: true
+AlwaysBreakTemplateDeclarations: true
+
+BinPackArguments: false
+BinPackParameters: false
+---

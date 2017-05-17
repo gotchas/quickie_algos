@@ -6,8 +6,8 @@ namespace rld {
 namespace algos {
 
 /// element which is going to be inserted is at the past the end position
-/// upper_bound returns destination for this element
-/// insertion is done by rotate left
+/// upper_bound returns final position for this element,
+/// insertion into array is equivalent to rotate left
 template <class ForwardIt> void insertion_sort(ForwardIt f, ForwardIt e) {
   auto const s = f;
   for (; f != e; ++f) {
