@@ -229,9 +229,5 @@ fibonaci_generator() {
 
 int
 main(int argc, char* argv[]) {
-   auto fgen = fibonaci_generator();
-   auto v    = fgen();
-   auto x    = fgen() + v;
-
-   return lest::run(rld::algos::specification, argc, argv);
+   return fibonaci_generator()(), lest::run(rld::algos::specification, argc, argv);
 }
