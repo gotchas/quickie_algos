@@ -14,4 +14,5 @@ main() {
 
    std::nth_element(v.begin(), v.begin() + 1, v.end(), std::greater<int>());
    std::cout << "The second largest element is " << v[1] << '\n';
+   return 0;
 }
