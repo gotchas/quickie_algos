@@ -1,6 +1,6 @@
 project
-   : requirements <include>. <cxxflags>"-std=c++1z "
-   : usage-requirements <include>. <cxxflags>"-std=c++1z "
+   : requirements <include>. <cxxflags>"-std=c++20 "
+   : usage-requirements <include>. <cxxflags>"-std=c++20 "
 ;
 
 import testing ;
@@ -9,13 +9,14 @@ import testing ;
 
 rule u-t ( target : properties * )
 {
-    unit-test $(target) : test/$(target).cpp
+    unit-test $(target) : test/test_$(target).cpp
     : #<library>algos # <testing.launcher>valgrind 
     $(properties)
     ;
 }
 
 u-t sorting ;
+u-t topo_sort ;
 
 #test-suite suite_sorting :
 #      [ run test/sorting.cpp ]
@@ -30,4 +31,5 @@ test-suite stats :
 ;
 
 #[ run test/Dijkstra_s_Algorithm.cpp : <toolset>clang-4.0 ]
+
 
