@@ -3,6 +3,8 @@ project
    : usage-requirements <include>. <cxxflags>"-std=c++1z "
 ;
 
+import testing ;
+
 #lib algos : src/suffix_array.cpp ;
 
 rule u-t ( target : properties * )

@@ -1,9 +1,9 @@
 // http://en.cppreference.com/w/cpp/algorithm/iter_swap
 
-#include "rld/qalgos/insertion_sort.h"
-#include "rld/qalgos/merge_sort.h"
-#include "rld/qalgos/quicksort.h"
-#include "rld/qalgos/selection_sort.h"
+#include "rld/algos/insertion_sort.h"
+#include "rld/algos/merge_sort.h"
+#include "rld/algos/quicksort.h"
+#include "rld/algos/selection_sort.h"
 
 #include "lest.hpp"
 

@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <vector>
 
-#include "rld/qalgos/insertion_sort.h"
+#include "rld/algos/insertion_sort.h"
 
 template <class Iter, class T>
 void
