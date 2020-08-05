@@ -1,0 +1,38 @@
+name: C/C++ CI
+on: [push]
+env:
+  BUILD_TYPE: Release # Release, Debug, RelWithDebInfo, etc.
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, windows-2016]
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+        
+    - name: Cache Hunter
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-hunter-std
+      with:
+        path: ~/.hunter/
+        key: ${{ matrix.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/CMakeLists.txt') }}
+        restore-keys: |
+          ${{ matrix.os }}-build-${{ env.cache-name }}-
+          ${{ matrix.os }}-build-
+          ${{ matrix.os }}-
+    
+    - name: configure
+      shell: bash
+      run: mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE # -DHUNTER_STATUS_DEBUG
+
+    - name: build
+      shell: bash
+      run: cmake --build build --config $BUILD_TYPE
+
+    - name: test
+      shell: bash
+      run: cd build && ctest -C $BUILD_TYPE
