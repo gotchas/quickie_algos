@@ -7,7 +7,14 @@
         "array": "cpp",
         "string_view": "cpp",
         "ranges": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "initializer_list": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp"
     },
     "cmake.configureOnOpen": false,
     "editor.formatOnSave": true

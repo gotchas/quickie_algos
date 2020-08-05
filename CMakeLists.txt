@@ -11,9 +11,14 @@ set(CMAKE_CXX_EXTENSIONS OFF) ## on g++ this ensures: -std=c++20 and not -std=gn
 
 include_directories(.)
 
+find_package(benchmark CONFIG REQUIRED)
+
 ### ### ### ### ### ### ### TESTS
 include(CTest)
 enable_testing()
+
+add_executable(bench test/benchmark.cpp)
+target_link_libraries(bench benchmark::benchmark)
 
 add_executable(test_graph test/test_graph.cpp)
 add_test(graph test_graph)
