@@ -9,20 +9,24 @@ namespace algos {
 const lest::test specification[] = {
     CASE( "Setup creates a fresh fixture for each section" )
     {
-        SETUP("Context") {
+        SETUP("Context") 
+        {
             int i = 7;
 
             SECTION("S1") {         i = 42;   }
             SECTION("S2") { EXPECT( i == 7 ); }
         }
-        SETUP("context: regular graph") {
+        SETUP("context: regular graph") 
+        {
       graph_out g{5};
-      SECTION("add") {
+      SECTION("add") 
+      {
          EXPECT(not g.connected(0, 1));
          g.add_edge(0, 1);
          EXPECT(g.connected(0, 1));
         }
-        SECTION("add_add_remove") {
+        SECTION("add_add_remove") 
+        {
          EXPECT(not g.connected(0, 1));
          EXPECT(not g.connected(0, 2));
          g.add_edge(0, 1);
@@ -33,13 +37,14 @@ const lest::test specification[] = {
          EXPECT(not g.connected(0, 1));
          EXPECT(g.connected(0, 2));
         }
-        SECTION("add_remove_add") {
+        SECTION("add_remove_add") 
+        {
         }
-        
    }
-   SETUP("dfs") {
-      //?
-        SECTION("dfs") {
+   SETUP("dfs") 
+   {
+        SECTION("dfs") 
+        {
             graph_out g{
                {7,},  //0
                {6,},  //1
@@ -55,9 +60,8 @@ const lest::test specification[] = {
             std::cout << "\n";
            g.dfs(0, [](int v) { std::cout << v << " "; });
         }
-
-
-        SECTION("dfs2") {
+        SECTION("dfs2") 
+        {
             graph_out g{
                {},  //0
                {2,5,9,},  //1
@@ -74,7 +78,8 @@ const lest::test specification[] = {
             std::cout << "\n";
            g.dfs(1, [](int v) { std::cout << v << " "; });
         }
-        SECTION("dfs3") {
+        SECTION("dfs3") 
+        {
             graph_out g{
                {},  //0
                {2,5,9,},  //1
@@ -93,10 +98,28 @@ const lest::test specification[] = {
             std::cout << "\n";
            g.dfs2(1, [](int v) { std::cout << v << " "; });
         }
-
+        SECTION("bfs") 
+        {
+            graph_out g{
+               {},  //0
+               {2,5,9,},  //1
+               {3,},  //2
+               {4,},  //3
+               {},  //4 
+               {6,8,},  //5
+               {7,},   //6
+               {},   //7 
+               {},   //8
+               {10,},   //9
+               {7},   //10     <- vs dfs2
+            };
+            std::cout << "\n";
+           g.bfs(1, [](int v) { std::cout << v << " "; });
+            std::cout << "\n";
+           g.bfs2(1, [](int v) { std::cout << v << " "; });
+        }
    }
    },   
-
 };
 // clang-format on
 }

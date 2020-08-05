@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "lest.hpp"
 #include "rld/algos/topo_sort.h"
 
@@ -23,7 +24,8 @@ const lest::test specification[] = {
             {},   //8
             {7,},   //9
          };
-         SECTION("topo sort") {/*
+         SECTION("topo sort") 
+         {/*
             g.add_edge(0,7);
             g.add_edge(1,6); 
             g.add_edge(2,5); 

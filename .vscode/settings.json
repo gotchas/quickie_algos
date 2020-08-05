@@ -1,7 +1,7 @@
 {
     "cmake.configureSettings": {
         "CMAKE_PROJECT_INCLUDE_BEFORE": "${workspaceFolder}/SetupHunter.cmake"
-    }, 
+    },
     "files.associations": {
         "algorithm": "cpp",
         "array": "cpp",
@@ -9,5 +9,6 @@
         "ranges": "cpp",
         "regex": "cpp"
     },
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "editor.formatOnSave": true
 }

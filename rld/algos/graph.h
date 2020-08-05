@@ -1,28 +1,43 @@
 #pragma once
 
-#include <vector>
-
-#include <stack>
-#include <queue>
-
 #include <algorithm>
+#include <queue>
+#include <stack>
+#include <vector>
 
 namespace rld {
 namespace algos {
 
-   class graph_in {}; //TODO dual to graph_out
-   class graph_out {  
-      std::vector<std::vector<int>> adj_;//for each vertex outcoming vertices
-      /*
-      static std::vector<std::vector<int>> 
-      from_ilist(std::initializer_list<std::initializer_list<int>> adj) { 
-        return std::vector<std::vector<int>>(adj.begin(), adj.end());
-      }*/
+   class graph_in {};  // TODO dual to graph_out
+   class graph_out {
+      std::vector<std::vector<int>> adj_;  // for each vertex outcoming vertices
+                                           /*
+                                           static std::vector<std::vector<int>>
+                                           from_ilist(std::initializer_list<std::initializer_list<int>> adj) {
+                                             return std::vector<std::vector<int>>(adj.begin(), adj.end());
+                                           }*/
+      // iterator for range of consecutive integers
+      struct irange {
+         int const*    first;
+         unsigned long lenght;
+         bool
+         empty() const {
+            return not lenght;
+         }
+         int
+         pop_front() {  // may be random element from the range
+            return --lenght, *(first++);
+         }  // indeterminism - any elem from the range pop_one()
+         int
+         pop_back() {  // may be random element from the range
+            return first[--lenght];
+         }  // indeterminism - any elem from the range pop_one()
+      };
 
      public:
       graph_out(int edges) : adj_(edges) {}
-      //graph_out(std::initializer_list<std::initializer_list<int>> adj): adj_(from_ilist(adj)) {}
-      graph_out(std::initializer_list<std::initializer_list<int>> adj): adj_(adj.begin(), adj.end()) {}
+      // graph_out(std::initializer_list<std::initializer_list<int>> adj): adj_(from_ilist(adj)) {}
+      graph_out(std::initializer_list<std::initializer_list<int>> adj) : adj_(adj.begin(), adj.end()) {}
       graph_out(std::vector<std::vector<int>>&& adj) : adj_{std::move(adj)} {}
 
       graph_out&
@@ -54,107 +69,126 @@ namespace algos {
                           [&ret](std::vector<int> const& v) { ranges::for_each(v, [&ret](int e) { ++ret[e]; }); });
          return ret;
       }
-      std::vector<int> const &
-      outcoming(int s) const { return adj_.at(s); }
+      std::vector<int> const&
+      outcoming(int s) const {
+         return adj_.at(s);
+      }
 
-/*
-procedure DFS_iterative(G, v) is
-    let S be a stack
-    S.push(v)
-    while S is not empty do
-        v = S.pop()
-        if v is not labeled as discovered then
-            label v as discovered
-            for all edges from v to w in G.adjacentEdges(v) do 
-                S.push(w)
+      /*
+      procedure DFS_iterative(G, v) is
+          let S be a stack
+          S.push(v)
+          while S is not empty do
+              v = S.pop()
+              if v is not labeled as discovered then
+                  label v as discovered
+                  for all edges from v to w in G.adjacentEdges(v) do
+                      S.push(w)
 
-list nodes_to_visit = {root};
-while( nodes_to_visit isn't empty ) {
-  currentnode = nodes_to_visit.take_first();
-  nodes_to_visit.prepend( currentnode.children );  //prepend == stack
-  //do something
-}                
-*/                
+      list nodes_to_visit = {root};
+      while( nodes_to_visit isn't empty ) {
+        currentnode = nodes_to_visit.take_first();
+        nodes_to_visit.prepend( currentnode.children );  //prepend == stack
+        //do something
+      }
+      */
       template <class Visitor>
       void
       dfs(int iv, Visitor visit) const {
-        std::vector<bool> discovered(adj_.size(), false);
+         std::vector<bool> discovered(adj_.size(), false);
 
-        std::stack<int> trace; 
-        trace.push(iv);
+         std::stack<int> trace;
+         trace.push(iv);
 
-        while(not trace.empty()) {
-          int v = trace.top(); trace.pop();
+         while (not trace.empty()) {
+            int v = trace.top();
+            trace.pop();
 
-          if(not discovered[v]) {
-            discovered[v] = true; 
-            visit(v);//? CRTP
-            std::ranges::for_each( adj_[v], [&trace](int e) { trace.push(e); } ); // indeterminism/random for_each
-            // !freedom to push in various orders
-            // dfs2: here we can "compress" all neightbours with iterator/variable range - bag ; pop_one()
-          }
-        }
+            if (not discovered[v]) {
+               discovered[v] = true;
+               visit(v);                                                            //? CRTP
+               std::ranges::for_each(adj_[v], [&trace](int e) { trace.push(e); });  // indeterminism/random for_each
+                                                                                    // !freedom to push in various orders
+               // dfs2: here we can "compress" all neightbours with iterator/variable range - bag ; pop_one()
+            }
+         }
       }
       template <class Visitor>
       void
       dfs2(int s, Visitor visit) const {
-        std::vector<bool> discovered(adj_.size(), false);
+         std::vector<bool> discovered(adj_.size(), false);
+         // iterator range: stack of consecutive children "compressed" with range //TODO test with google benchmark
 
-        struct irange { // iterator range: stack of consecutive children "compressed" with range
-           int const *b;  //TODO test with google benchmark
-           int const *e;
-           bool empty() const {return b==e; }
-           int next() { return *(b++); } // indeterminism - any elem from the range pop_one()
-         };
-        int iv[1] = {s}; // make sure pst the end pointer is valid
+         std::stack<irange> trace;
+         trace.push({&s, 1LU});
 
-        std::stack< irange > trace; 
-        trace.push( {iv, iv+1} );
+         while (not trace.empty()) {
+            if (trace.top().empty()) {
+               trace.pop();
+            } else {
+               int v = trace.top().pop_front();
 
-        while(not trace.empty()) {
-          if(trace.top().empty()) {
-             trace.pop();
-          } else {
-            int v = trace.top().next();
-
-            if(not discovered[v]) {
-               discovered[v] = true; 
-               visit(v);//? CRTP
-               auto & children = adj_[v];
-               irange x{ children.data(), children.data()+children.size() };
-               trace.push( x );
+               if (not discovered[v]) {
+                  discovered[v] = true;
+                  visit(v);  //? CRTP
+                  auto& children = adj_[v];
+                  trace.push({children.data(), children.size()});
+               }
             }
-          }
-        }
-
+         }
       }
-/*
-list nodes_to_visit = {root};
-while( nodes_to_visit isn't empty ) {
-  currentnode = nodes_to_visit.take_first();
-  nodes_to_visit.append( currentnode.children );    / append == queue
-  //do something
-}*/
-      //template <class Visitor>
+      /*
+      list nodes_to_visit = {root};
+      while( nodes_to_visit isn't empty ) {
+        currentnode = nodes_to_visit.take_first();
+        nodes_to_visit.append( currentnode.children );    / append == queue
+        //do something
+      }*/
+      template <class Visitor>
       void
-      bfs(int iv) const {//, Visitor visit) const {
-        std::vector<bool> discovered(adj_.size(), false);
+      bfs(int iv, Visitor visit) const {
+         std::vector<bool> discovered(adj_.size(), false);
 
-        std::queue<int> trace; 
-        trace.push(iv);
+         std::queue<int> trace;
+         trace.push(iv);
 
-        while(not trace.empty()) {
-          int v = trace.front(); trace.pop();// ! the only difference vs bfs is front() instead top() 
+         while (not trace.empty()) {
+            int v = trace.front();
+            trace.pop();  // ! the only difference vs bfs is front() instead top()
 
-          if(not discovered[v]) {
-            discovered[v] = true; 
-            //visit(v);//? CRTP
-            std::ranges::for_each( adj_[v], [&trace](int e) { trace.push(e); } ); // indeterminism/random for_each
-            // here we can "compress" all neightbours with iterator/variable range - bag ; pop_one()
-          }
-        }
+            if (not discovered[v]) {
+               discovered[v] = true;
+               visit(v);                                                            //? CRTP
+               std::ranges::for_each(adj_[v], [&trace](int e) { trace.push(e); });  // indeterminism/random for_each
+               // here we can "compress" all neightbours with iterator/variable range - bag ; pop_one()
+            }
+         }
       }
+      template <class Visitor>
+      void
+      bfs2(int s, Visitor visit) const {
+         std::vector<bool> discovered(adj_.size(), false);
+         // iterator range: stack of consecutive children "compressed" with range //TODO test with google benchmark
 
+         std::queue<irange> trace;
+         trace.push({&s, 1LU});
+
+         while (not trace.empty()) {
+            if (trace.front().empty()) {  // front/top
+               trace.pop();
+            } else {
+               int v = trace.front().pop_back();  // front/top
+
+               if (not discovered[v]) {
+                  discovered[v] = true;
+                  visit(v);  //? CRTP
+                  auto& children = adj_[v];
+                  trace.push({children.data(), children.size()});
+               }
+            }
+         }
+      }
    };
 
-}}
+}  // namespace algos
+}  // namespace rld
