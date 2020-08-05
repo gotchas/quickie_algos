@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "lest.hpp"
 #include "rld/algos/graph.h"
 
@@ -33,6 +35,65 @@ const lest::test specification[] = {
         }
         SECTION("add_remove_add") {
         }
+        
+   }
+   SETUP("dfs") {
+      //?
+        SECTION("dfs") {
+            graph_out g{
+               {7,},  //0
+               {6,},  //1
+               {5,},  //2
+               {5,},  //3
+               {5,7,},  //4
+               {6,},  //5
+               {7,},   //6
+               {8,},   //7
+               {},   //8
+               {7,},   //9
+            };
+            std::cout << "\n";
+           g.dfs(0, [](int v) { std::cout << v << " "; });
+        }
+
+
+        SECTION("dfs2") {
+            graph_out g{
+               {},  //0
+               {2,5,9,},  //1
+               {3,},  //2
+               {4,},  //3
+               {},  //4
+               {6,8,},  //5
+               {7,},   //6
+               {},   //7
+               {},   //8
+               {10,},   //9
+               {},   //10
+            };
+            std::cout << "\n";
+           g.dfs(1, [](int v) { std::cout << v << " "; });
+        }
+        SECTION("dfs3") {
+            graph_out g{
+               {},  //0
+               {2,5,9,},  //1
+               {3,},  //2
+               {4,},  //3
+               {},  //4
+               {6,8,},  //5
+               {7,},   //6
+               {},   //7
+               {},   //8
+               {10,},   //9
+               {7},   //10     <- vs dfs2
+            };
+            std::cout << "\n";
+           g.dfs(1, [](int v) { std::cout << v << " "; });
+            std::cout << "\n";
+           g.dfs2(1, [](int v) { std::cout << v << " "; });
+        }
+
    }
    },   
 

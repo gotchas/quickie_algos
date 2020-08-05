@@ -3,6 +3,11 @@
         "CMAKE_PROJECT_INCLUDE_BEFORE": "${workspaceFolder}/SetupHunter.cmake"
     }, 
     "files.associations": {
-        "algorithm": "cpp"
-    }
+        "algorithm": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "ranges": "cpp",
+        "regex": "cpp"
+    },
+    "cmake.configureOnOpen": false
 }

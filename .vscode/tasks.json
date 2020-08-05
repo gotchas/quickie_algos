@@ -14,9 +14,12 @@
 			"options": {
 				"cwd": "${workspaceFolder}"
 			},
-			"problemMatcher": [
-				"$gcc"
-			],
+
+			"problemMatcher": {
+        "base": "$gcc",
+        "fileLocation": ["relative", "${workspaceRoot}/builddir"]
+    }			
+		,
 			"group": {
 				"kind": "build",
 				"isDefault": true

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.17.0)
 INCLUDE( SetupHunter.cmake )
 project(quickie_algos VERSION 0.1.0)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
+#set(CMAKE_VERBOSE_MAKEFILE ON) # ? interferes with errors diagnostic - jump to an error in editor
 
 set(CMAKE_CXX_STANDARD 20) 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
