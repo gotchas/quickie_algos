@@ -17,6 +17,7 @@ rule u-t ( target : properties * )
 
 u-t sorting ;
 u-t topo_sort ;
+u-t graph ;
 
 #test-suite suite_sorting :
 #      [ run test/sorting.cpp ]
