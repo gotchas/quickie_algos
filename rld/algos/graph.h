@@ -33,6 +33,10 @@ namespace algos {
             return first[--lenght];
          }  // indeterminism - any elem from the range pop_one()
       };
+      // overload to implement both dfs and bfs using common interface to stack and queue
+      // the fix is to use common name front(container) for queue::front() and stack::pop()
+      static int front(std::queue<int> const & q) { return q.front(); }
+      static int front(std::stack<int> const & s) { return s.top(); }
 
      public:
       graph_out(int edges) : adj_(edges) {}
