@@ -2,6 +2,8 @@
 
 [![download](https://img.shields.io/badge/latest%20version%20%20-download-blue.svg)](https://raw.githubusercontent.com/gotchas/quickie_algos/master/rld/qalgos/insertion_sort.h)
 
+![C/C++ CI](https://github.com/gotchas/quickie_algos/workflows/C/C++%20CI/badge.svg)
+
 # quickie algos: qalgos
 
 collection of simple algos implemented in C++14/C++17
