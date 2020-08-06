@@ -1,10 +1,21 @@
 #include <iostream>
 
+#if 1
+#include "gmock/gmock.h"
+#else
 #include "lest.hpp"
+using rld::algos::specification;
+int
+main(int argc, char* argv[]) {
+   return lest::run(specification, argc, argv);
+}
+#endif
+
 #include "rld/algos/graph.h"
 
 namespace rld {
 namespace algos {
+#if 0
    // clang-format off
 const lest::test specification[] = {
     CASE( "Setup creates a fresh fixture for each section" )
@@ -41,42 +52,13 @@ const lest::test specification[] = {
         {
         }
    }
-   SETUP("dfs") 
+   SETUP("gra") 
    {
         SECTION("dfs") 
         {
-            graph_out g{
-               {7,},  //0
-               {6,},  //1
-               {5,},  //2
-               {5,},  //3
-               {5,7,},  //4
-               {6,},  //5
-               {7,},   //6
-               {8,},   //7
-               {},   //8
-               {7,},   //9
-            };
-            std::cout << "\n";
-           g.dfs(0, [](int v) { std::cout << v << " "; });
         }
         SECTION("dfs2") 
         {
-            graph_out g{
-               {},  //0
-               {2,5,9,},  //1
-               {3,},  //2
-               {4,},  //3
-               {},  //4
-               {6,8,},  //5
-               {7,},   //6
-               {},   //7
-               {},   //8
-               {10,},   //9
-               {},   //10
-            };
-            std::cout << "\n";
-           g.dfs(1, [](int v) { std::cout << v << " "; });
         }
         SECTION("dfs3") 
         {
@@ -121,11 +103,68 @@ const lest::test specification[] = {
    }
    },   
 };
-// clang-format on
+#endif
+#if 1
+    using ::testing::ElementsAreArray;
+    using ::testing::UnorderedElementsAreArray;
+    using ::testing::Not;
+
+TEST(dfs, forrest) {
+            graph_out g{
+               {7,},  //0
+               {6,},  //1
+               {5,},  //2
+               {5,},  //3
+               {5,7,},  //4
+               {6,},  //5
+               {7,},   //6
+               {8,},   //7
+               {},   //8
+               {7,},   //9
+            };//TODO topo_sort
+            std::cout << "\n";
+           std::vector<int> result;
+           g.dfs(0, [&result](int v) { std::cout << v << "< " ; result.push_back(v); });
+           EXPECT_THAT(result, ElementsAreArray(
+              //{1,2,3,4,5,6,0,7,8}
+              {0,7,8,}
+              ));
 }
+TEST(dfs, regular_graph) {
+            graph_out g{
+               {},  //0
+               {2,5,9,},  //1
+               {3,},  //2
+               {4,},  //3
+               {},  //4
+               {6,8,},  //5
+               {7,},   //6
+               {},   //7
+               {},   //8
+               {10,},   //9
+               {},   //10
+            };
+            std::vector<int> result;
+           g.dfs(1, [&result](int v) { std::cout << v << " "; result.push_back(v); });
+           EXPECT_THAT(result, ElementsAreArray(
+              { 1, 9, 10, 5, 8, 6, 7, 2, 3, 4 }
+           ));
+
+           result.clear();
+           g.dfs2(1, [&result](int v) { std::cout << v << " "; result.push_back(v); });
+           EXPECT_THAT(result, ElementsAreArray(
+              { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+           ));
 }
-using rld::algos::specification;
-int
-main(int argc, char* argv[]) {
-   return lest::run(specification, argc, argv);
-}
+#endif
+   // clang-format on
+}  // namespace algos
+}  // namespace rld
+
+/*
+1 9 10 5 8 6 7 2 3 4 
+1 9 10 7 5 8 6 2 3 4 
+1 2 3 4 5 6 7 8 9 10 
+1 2 5 9 3 6 8 10 4 7 
+1 9 5 2 10 8 6 3 7 4 ⏎
+*/

@@ -12,12 +12,11 @@ set(HUNTER_pcre2_CMAKE_ARGS
     PCRE2_BUILD_PCRE2_16=ON
     PCRE2_BUILD_PCRE2_32=OFF
     PCRE2_SUPPORT_JIT=ON)
+
 set(HUNTER_benchmark_CMAKE_ARGS 
     CMAKE_BUILD_TYPE=Release
     CMAKE_CXX_COMPILER=g++-10
 )
-
-#set(HUNTER_PACKAGES pcre2 GTest Boost) 
-set(HUNTER_PACKAGES benchmark)
+set(HUNTER_PACKAGES benchmark GTest) # pcre2 Boost
 
 FetchContent_MakeAvailable(SetupHunter)

@@ -11,6 +11,7 @@ set(CMAKE_CXX_EXTENSIONS OFF) ## on g++ this ensures: -std=c++20 and not -std=gn
 
 include_directories(.)
 
+find_package(GTest CONFIG REQUIRED)
 find_package(benchmark CONFIG REQUIRED)
 
 ### ### ### ### ### ### ### TESTS
@@ -21,6 +22,7 @@ add_executable(bench test/benchmark.cpp)
 target_link_libraries(bench benchmark::benchmark)
 
 add_executable(test_graph test/test_graph.cpp)
+target_link_libraries(test_graph PRIVATE GTest::gmock_main)
 add_test(graph test_graph)
 
 add_executable(test_topo_s.exe test/test_topo_sort.cpp)

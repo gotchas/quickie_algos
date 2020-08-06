@@ -6,8 +6,6 @@
 
 # quickie algos: qalgos
 
-collection of simple algos implemented in C++14/C++17
+collection of simple algos implemented in C++20
 
 
-### TODO
-1. Add to travis
