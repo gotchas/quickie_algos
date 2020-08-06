@@ -14,12 +14,13 @@ include_directories(.)
 find_package(GTest CONFIG REQUIRED)
 find_package(benchmark CONFIG REQUIRED)
 
+add_executable(bench benchmark.cpp)
+target_link_libraries(bench benchmark::benchmark)
+
 ### ### ### ### ### ### ### TESTS
 include(CTest)
 enable_testing()
 
-add_executable(bench test/benchmark.cpp)
-target_link_libraries(bench benchmark::benchmark)
 
 add_executable(test_graph test/test_graph.cpp)
 target_link_libraries(test_graph PRIVATE GTest::gmock_main)
