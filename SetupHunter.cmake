@@ -14,7 +14,7 @@ set(HUNTER_pcre2_CMAKE_ARGS
     PCRE2_SUPPORT_JIT=ON)
 set(HUNTER_benchmark_CMAKE_ARGS 
     CMAKE_BUILD_TYPE=Release
-    CMAKE_CXX_COMPILER=/bin/g++-10
+    CMAKE_CXX_COMPILER=g++-10
 )
 
 #set(HUNTER_PACKAGES pcre2 GTest Boost) 
