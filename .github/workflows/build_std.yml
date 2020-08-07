@@ -24,7 +24,10 @@ jobs:
           ${{ matrix.os }}-build-${{ env.cache-name }}-
           ${{ matrix.os }}-build-
           ${{ matrix.os }}-
-    - name: install gcc 10
+    -name ninja
+     uses: seanmiddleditch/gha-setup-ninja@master
+        
+    - name: install gcc 10 
       shell: bash
       run: |
          sudo apt install g++-10 
