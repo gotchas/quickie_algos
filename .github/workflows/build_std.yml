@@ -24,8 +24,8 @@ jobs:
           ${{ matrix.os }}-build-${{ env.cache-name }}-
           ${{ matrix.os }}-build-
           ${{ matrix.os }}-
-    -name ninja
-     uses: seanmiddleditch/gha-setup-ninja@master
+    - name: ninja
+      uses: seanmiddleditch/gha-setup-ninja@master
         
     - name: install gcc 10 
       shell: bash
